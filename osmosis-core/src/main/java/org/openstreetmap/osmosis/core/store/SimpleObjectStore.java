@@ -18,7 +18,6 @@ import org.openstreetmap.osmosis.core.OsmosisRuntimeException;
 import org.openstreetmap.osmosis.core.lifecycle.Completable;
 import org.openstreetmap.osmosis.core.lifecycle.ReleasableIterator;
 
-
 /**
  * Provides a store for writing objects to a file for later retrieval. The
  * number of objects is limited only by disk space.
