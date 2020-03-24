@@ -3,6 +3,7 @@ package org.openstreetmap.osmosis.xml.v0_6;
 
 import org.openstreetmap.osmosis.core.task.v0_6.RunnableSource;
 import org.openstreetmap.osmosis.core.task.v0_6.Sink;
+
 import org.openstreetmap.osmosis.xml.common.CompressionMethod;
 import org.openstreetmap.osmosis.xml.v0_6.impl.BaseXMLReader;
 import org.openstreetmap.osmosis.xml.v0_6.impl.OsmHandler;
@@ -19,7 +20,7 @@ import java.util.Collections;
  */
 public class XmlReader extends BaseXMLReader implements RunnableSource {
 	private Sink sink;
-
+	
 	/**
 	 * Creates a new instance.
 	 * 
@@ -32,9 +33,9 @@ public class XmlReader extends BaseXMLReader implements RunnableSource {
 	 *            Specifies the compression method to employ.
 	 */
 	public XmlReader(File file, boolean enableDateParsing, CompressionMethod compressionMethod) {
-		super(file, enableDateParsing, compressionMethod);
+        super(file, enableDateParsing, compressionMethod);
 	}
-
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -47,11 +48,11 @@ public class XmlReader extends BaseXMLReader implements RunnableSource {
 	 */
 	public void run() {
 		try {
-			this.sink.initialize(Collections.emptyMap());
-			this.handleXML(new OsmHandler(this.sink, this.isEnableDateParsing()));
-			this.sink.complete();
+            this.sink.initialize(Collections.emptyMap());
+            this.handleXML(new OsmHandler(this.sink, this.isEnableDateParsing()));
+            this.sink.complete();
 		} finally {
-			this.sink.close();
+            this.sink.close();
 		}
 	}
 }

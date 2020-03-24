@@ -9,6 +9,7 @@ import org.openstreetmap.osmosis.core.pipeline.v0_6.ChangeSinkChangeSourceManage
  * The task manager factory for a replication to change writer.
  */
 public class ReplicationToChangeWriterFactory extends WorkingTaskManagerFactory {
+
 	/**
 	 * {@inheritDoc}
 	 */

@@ -15,14 +15,13 @@ import org.openstreetmap.osmosis.core.pipeline.common.TaskManager;
  */
 public class IntervalDownloaderInitializerFactory extends WorkingTaskManagerFactory {
 	private static final String ARG_INITIAL_DATE = "initialDate";
-	
+    
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	protected TaskManager createTaskManagerImpl(TaskConfiguration taskConfig) {
 		Date initialDate;
-		
 		// Get the task arguments.
 		initialDate = getDateArgument(taskConfig, ARG_INITIAL_DATE, TimeZone.getTimeZone("UTC"));
 		

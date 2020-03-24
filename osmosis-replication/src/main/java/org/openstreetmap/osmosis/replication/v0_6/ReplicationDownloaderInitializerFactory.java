@@ -9,6 +9,7 @@ import org.openstreetmap.osmosis.core.pipeline.common.TaskManager;
  * The task manager factory for a replication file download initializer.
  */
 public class ReplicationDownloaderInitializerFactory extends WorkingTaskManagerFactory {
+	
 	/**
 	 * {@inheritDoc}
 	 */

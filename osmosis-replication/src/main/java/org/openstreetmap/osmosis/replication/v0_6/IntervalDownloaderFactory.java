@@ -11,6 +11,7 @@ import org.openstreetmap.osmosis.core.pipeline.v0_6.RunnableChangeSourceManager;
  * @author Brett Henderson
  */
 public class IntervalDownloaderFactory extends WorkingTaskManagerFactory {
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -20,7 +21,7 @@ public class IntervalDownloaderFactory extends WorkingTaskManagerFactory {
 			taskConfig.getId(),
 			new IntervalDownloader(
 				taskConfig.getId(),
-				getWorkingDirectory(taskConfig)
+				this.getWorkingDirectory(taskConfig)
 			),
 			taskConfig.getPipeArgs()
 		);

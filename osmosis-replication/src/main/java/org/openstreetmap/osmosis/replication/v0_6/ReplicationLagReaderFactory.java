@@ -29,7 +29,7 @@ public class ReplicationLagReaderFactory extends WorkingTaskManagerFactory {
 		return new RunnableTaskManager(
 			taskConfig.getId(),
 			new ReplicationLagReader(
-				this.getWorkingDirectory(taskConfig),
+				this.getWorkingDirectory(taskConfig), 
 				humanReadableFlag
 			),
 			taskConfig.getPipeArgs()

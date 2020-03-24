@@ -5,6 +5,7 @@ import org.openstreetmap.osmosis.core.pipeline.common.RunnableTaskManager;
 import org.openstreetmap.osmosis.core.pipeline.common.TaskConfiguration;
 import org.openstreetmap.osmosis.core.pipeline.common.TaskManager;
 
+
 /**
  * The task manager factory for a replication file merger.
  */

@@ -9,6 +9,7 @@ import org.openstreetmap.osmosis.core.pipeline.v0_6.ChangeSinkManager;
  * The task manager factory for a replication file downloader.
  */
 public class ReplicationWriterFactory extends WorkingTaskManagerFactory {
+
 	/**
 	 * {@inheritDoc}
 	 */

@@ -12,6 +12,7 @@ import javax.xml.stream.XMLStreamReader;
 
 import org.openstreetmap.osmosis.core.task.v0_6.RunnableSource;
 import org.openstreetmap.osmosis.core.task.v0_6.Sink;
+
 import org.openstreetmap.osmosis.xml.common.CompressionMethod;
 import org.openstreetmap.osmosis.xml.v0_6.impl.BaseXMLReader;
 import org.openstreetmap.osmosis.xml.v0_6.impl.FastXmlParser;
@@ -27,56 +28,56 @@ import org.xml.sax.helpers.DefaultHandler;
  */
 public class FastXmlReader extends BaseXMLReader implements RunnableSource {
 	private Sink sink;
-
+		
 	/**
-	 * Creates a new instance.
-	 *
+          * Creates a new instance.
+	 * 
 	 * @param file
 	 *            The file to read.
 	 * @param enableDateParsing
 	 *            If true, dates will be parsed from xml data, else the current
-	 *            date will be used thus saving parsing time.
-	 * @param compressionMethod
+          *            date will be used thus saving parsing time.
+          * @param compressionMethod
 	 *            Specifies the compression method to employ.
 	 */
 	public FastXmlReader(File file, boolean enableDateParsing, CompressionMethod compressionMethod) {
-		super(file, enableDateParsing, compressionMethod);
+        super(file, enableDateParsing, compressionMethod);
 	}
-
+		
 	/**
 	 * {@inheritDoc}
 	 */
 	public void setSink(Sink sink) {
 		this.sink = sink;
 	}
-
+		
 	/**
 	 * Reads all data from the file and send it to the sink.
 	 */
 	public void run() {
-		try {
-			this.sink.initialize(Collections.emptyMap());
-			this.handleXML(null);
-			this.sink.complete();
-		} finally {
-			this.sink.close();
-		}
+        try {
+            this.sink.initialize(Collections.emptyMap());
+            this.handleXML(null);
+            this.sink.complete();
+        } finally {
+            this.sink.close();
+        }
 	}
 
-	@Override
-	protected void parseXML(InputStream stream, DefaultHandler handler)
-			throws SAXException, IOException {
-		try {
-			final XMLInputFactory factory = XMLInputFactory.newInstance();
-			factory.setProperty(XMLInputFactory.IS_COALESCING, false);
-			factory.setProperty(XMLInputFactory.IS_NAMESPACE_AWARE, false);
-			factory.setProperty(XMLInputFactory.IS_VALIDATING, false);
-			final XMLStreamReader xpp = factory.createXMLStreamReader(stream);
+    @Override
+    protected void parseXML(InputStream stream, DefaultHandler handler)
+                    throws SAXException, IOException {
+        try {
+            final XMLInputFactory factory = XMLInputFactory.newInstance();
+            factory.setProperty(XMLInputFactory.IS_COALESCING, false);
+            factory.setProperty(XMLInputFactory.IS_NAMESPACE_AWARE, false);
+            factory.setProperty(XMLInputFactory.IS_VALIDATING, false);
+            final XMLStreamReader xpp = factory.createXMLStreamReader(stream);
 
-			final FastXmlParser parser = new FastXmlParser(this.sink, xpp, this.isEnableDateParsing());
-			parser.readOsm();
-		} catch (final XMLStreamException e) {
-			throw new SAXException(e);
-		}
-	}
+            final FastXmlParser parser = new FastXmlParser(this.sink, xpp, this.isEnableDateParsing());
+            parser.readOsm();
+        } catch (final XMLStreamException e) {
+            throw new SAXException(e);
+        }
+    }
 }

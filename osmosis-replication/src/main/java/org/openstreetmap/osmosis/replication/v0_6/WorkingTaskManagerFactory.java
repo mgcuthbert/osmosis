@@ -15,7 +15,7 @@ public abstract class WorkingTaskManagerFactory extends TaskManagerFactory {
     private static final String ARG_WORKING_DIRECTORY = "workingDirectory";
     private static final String DEFAULT_WORKING_DIRECTORY = "./";
 
-    /**
+  /**
      * Gets the current working directory for the task.
      *
      * @param taskConfig {@link TaskConfiguration}

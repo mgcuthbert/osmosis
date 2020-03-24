@@ -3,13 +3,13 @@ package org.openstreetmap.osmosis.xml.v0_6;
 
 import org.openstreetmap.osmosis.core.task.v0_6.ChangeSink;
 import org.openstreetmap.osmosis.core.task.v0_6.RunnableChangeSource;
+
 import org.openstreetmap.osmosis.xml.common.CompressionMethod;
 import org.openstreetmap.osmosis.xml.v0_6.impl.BaseXMLReader;
 import org.openstreetmap.osmosis.xml.v0_6.impl.OsmChangeHandler;
 
 import java.io.File;
 import java.util.Collections;
-
 
 /**
  * A change source reading from an xml file. The entire contents of the file
@@ -32,7 +32,7 @@ public class XmlChangeReader extends BaseXMLReader implements RunnableChangeSour
 	 *            Specifies the compression method to employ.
 	 */
 	public XmlChangeReader(File file, boolean enableDateParsing, CompressionMethod compressionMethod) {
-		super(file, enableDateParsing, compressionMethod);
+        super(file, enableDateParsing, compressionMethod);
 	}
 
 	/**
@@ -47,11 +47,11 @@ public class XmlChangeReader extends BaseXMLReader implements RunnableChangeSour
 	 */
 	public void run() {
 		try {
-			this.changeSink.initialize(Collections.emptyMap());
-			this.handleXML(new OsmChangeHandler(this.changeSink, this.isEnableDateParsing()));
-			this.changeSink.complete();
+            this.changeSink.initialize(Collections.emptyMap());
+            this.handleXML(new OsmChangeHandler(this.changeSink, this.isEnableDateParsing()));
+            this.changeSink.complete();    
 		} finally {
-			this.changeSink.close();
-		}
+            this.changeSink.close();
+        }
 	}
 }
