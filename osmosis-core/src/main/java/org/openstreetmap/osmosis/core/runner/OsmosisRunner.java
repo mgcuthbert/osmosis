@@ -22,7 +22,8 @@ public class OsmosisRunner implements Runnable {
     private final OsmosisTask outTask;
 
     /**
-     * Standard Constructor.
+     * Standard Constructor. 
+     * Todo: This can easily be extended to take a list of tasks and add them all to the pipeline
      *
      * @param inTask The in Task
      * @param outTask The out Task
