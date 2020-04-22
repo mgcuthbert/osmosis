@@ -14,18 +14,19 @@ import org.openstreetmap.osmosis.core.pipeline.common.TaskConfiguration;
 import org.openstreetmap.osmosis.core.pipeline.common.TaskManager;
 import org.openstreetmap.osmosis.core.pipeline.common.TaskManagerFactory;
 import org.openstreetmap.osmosis.core.pipeline.v0_6.RunnableSourceManager;
-import org.springframework.util.StringUtils;
+import com.google.common.base.Strings;
+
 
 /**
  * The task manager factory for a PBF reader.
- *
+ * 
  * @author Brett Henderson
  */
 public class PbfReaderFactory extends TaskManagerFactory {
-    private static final Logger LOG = Logger.getLogger(PbfReaderFactory.class.getName());
+	private static final Logger LOG = Logger.getLogger(PbfReaderFactory.class.getName());
 
-    private static final String ARG_FILE_NAME = "file";
-    private static final String DEFAULT_FILE_NAME = "dump.osm.pbf";
+ 	private static final String ARG_FILE_NAME = "file";
+	private static final String DEFAULT_FILE_NAME = "dump.osm.pbf";
     private static final String ARG_WORKERS = "workers";
     private static final int DEFAULT_WORKERS = 0;
     private static final String ARG_PROXY_HTTP = "proxy";
@@ -35,12 +36,13 @@ public class PbfReaderFactory extends TaskManagerFactory {
     private static final int DEFAULT_READ_TIMEOUT = 60_000;
     private static final String FILE_POSTFIX = ".temp.pbf";
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected TaskManager createTaskManagerImpl(TaskConfiguration taskConfig) {
-        String fileName;
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected TaskManager createTaskManagerImpl(TaskConfiguration taskConfig) {
+		String fileName;
         PbfReader task;
         int workers;
 
@@ -120,7 +122,7 @@ public class PbfReaderFactory extends TaskManagerFactory {
     private HttpURLConnection getURLConnection(final URL url, final String proxyString,
             final int proxyPort, final int timeout, final int readTimeout) throws IOException {
         Proxy proxy = null;
-        if (!StringUtils.isEmpty(proxyString)) {
+        if (!Strings.isNullOrEmpty(proxyString)) {
             final InetSocketAddress address = new InetSocketAddress(proxyString, proxyPort);
             proxy = new Proxy(Proxy.Type.HTTP, address);
         }
