@@ -5,7 +5,6 @@ import org.openstreetmap.osmosis.core.pipeline.common.TaskConfiguration;
 import org.openstreetmap.osmosis.core.pipeline.common.TaskManager;
 import org.openstreetmap.osmosis.core.pipeline.v0_6.ChangeSinkManager;
 
-
 /**
  * The task manager factory for a replication file downloader.
  */

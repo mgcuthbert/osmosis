@@ -29,7 +29,7 @@ public abstract class BaseXMLReader {
     private final boolean enableDateParsing;
     private final CompressionMethod method;
 
-     /**
+  /**
      * Default Constructor.
      *
      * @param file File to parse
@@ -42,7 +42,7 @@ public abstract class BaseXMLReader {
         this.method = method;
     }
 
-     /**
+  /**
      * Returns whether this object enables date parsing or not.
      *
      * @return true or false
@@ -51,7 +51,7 @@ public abstract class BaseXMLReader {
         return this.enableDateParsing;
     }
 
-     /**
+  /**
      * Function to parse xml, this default function just uses the SAXParser.
      *
      * @param stream InputStream for the XML
@@ -65,7 +65,7 @@ public abstract class BaseXMLReader {
         parser.parse(stream, handler);
     }
 
-     /**
+  /**
      * Function to handle the XML for the sub classes.
      *
      * @param handler A {@link DefaultHandler}

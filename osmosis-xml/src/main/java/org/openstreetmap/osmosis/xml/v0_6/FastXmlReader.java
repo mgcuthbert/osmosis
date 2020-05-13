@@ -30,14 +30,14 @@ public class FastXmlReader extends BaseXMLReader implements RunnableSource {
 	private Sink sink;
 		
 	/**
-     * Creates a new instance.
+          * Creates a new instance.
 	 * 
 	 * @param file
 	 *            The file to read.
 	 * @param enableDateParsing
 	 *            If true, dates will be parsed from xml data, else the current
-     *            date will be used thus saving parsing time.
-     * @param compressionMethod
+          *            date will be used thus saving parsing time.
+          * @param compressionMethod
 	 *            Specifies the compression method to employ.
 	 */
 	public FastXmlReader(File file, boolean enableDateParsing, CompressionMethod compressionMethod) {
