@@ -43,7 +43,7 @@ public class ReplicationFileMerger extends BaseReplicationDownloader {
 	 * @param workingDirectory
 	 *            The directory containing configuration and tracking files.
 	 * @param single
-	 * 			  Set to true if you want to only replication a single diff file from the server
+	 * 			  Set to true if you want to only replicate a single diff file from the server
 	 */
 	public ReplicationFileMerger(File workingDirectory, boolean single) {
 		super(workingDirectory, single);

@@ -17,8 +17,8 @@ public class ReplicationDownloaderFactory extends WorkingTaskManagerFactory {
 	 */
 	@Override
 	protected TaskManager createTaskManagerImpl(TaskConfiguration taskConfig) {
-		boolean single = getBooleanArgument(taskConfig, ARG_SINGLE, DEFAULT_SINGLE);
-		
+		boolean single = getBooleanArgument(taskConfig, ARG_SINGLE, DEFAULT_SINGLE);	
+
 		return new RunnableChangeSourceManager(
 			taskConfig.getId(),
 			new ReplicationDownloader(

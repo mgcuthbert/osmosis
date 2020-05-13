@@ -42,20 +42,20 @@ public abstract class BaseReplicationDownloader implements RunnableTask {
 	private static final String LOCAL_STATE_FILE = "state.txt";
 	private static final String CUSTOM_SERVER_STATE_FILE = "custom.state.txt";
 
-
+  
 	private File workingDirectory;
 	private ReplicationSequenceFormatter sequenceFormatter;
 	private ServerStateReader serverStateReader;
 	private boolean single;
 
-
+ 
 	/**
 	 * Creates a new instance.
 	 *
 	 * @param workingDirectory
 	 *            The directory containing configuration and tracking files.
 	 * @param single
-	 * 			  Set to true if you want to only replication a single diff file from the server
+	 * 			  Set to true if you want to only replicate a single diff file from the server
 	 */
 	public BaseReplicationDownloader(File workingDirectory, boolean single) {
 		this.workingDirectory = workingDirectory;
@@ -242,11 +242,11 @@ public abstract class BaseReplicationDownloader implements RunnableTask {
 			// Update the local state to reflect the file state just processed.
 			localState = fileReplicationState;
 
-			// if single is set to true if means that we only want to get a single replication file
-			// and not up to the current.
-            if (single) {
-                break;
-            }
+			// if single is set to true it means that we only want to get a single replication file
+			// and not up to the current one.
+			if (single) {
+				break;
+			}
 		}
 
 		return localState;
@@ -273,6 +273,10 @@ public abstract class BaseReplicationDownloader implements RunnableTask {
 				serverState = serverStateReader.getServerState(configuration.getBaseUrl());
 				LOG.info(String.format("Reading current server state. [%s]", serverState.toString()));
 			}
+			
+			// Obtain the server state.
+			LOG.fine("Reading current server state.");
+			serverState = serverStateReader.getServerState(configuration.getBaseUrl());
 
 			// Build the local state persister which is used for both loading and storing local state.
 			localStatePersistor = new PropertiesPersister(new File(workingDirectory, LOCAL_STATE_FILE));
