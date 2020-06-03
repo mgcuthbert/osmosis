@@ -26,8 +26,8 @@ public class PostgreSqlCopyWriterFactory extends DatabaseTaskManagerFactory {
 	protected TaskManager createTaskManagerImpl(TaskConfiguration taskConfig) {
 		NodeLocationStoreType storeType;
 		boolean keepInvalidWays;
-		
-		// Get the task arguments.
+
+    // Get the task arguments.
 		storeType = Enum.valueOf(
 				NodeLocationStoreType.class,
 				getStringArgument(taskConfig, ARG_NODE_LOCATION_STORE_TYPE, DEFAULT_NODE_LOCATION_STORE_TYPE));

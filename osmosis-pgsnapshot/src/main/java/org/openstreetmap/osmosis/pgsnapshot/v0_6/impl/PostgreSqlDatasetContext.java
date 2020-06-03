@@ -112,9 +112,9 @@ public class PostgreSqlDatasetContext implements DatasetContext {
 			wayDao = new WayDao(dbCtx, actionDao, this.logging);
 			relationDao = new RelationDao(dbCtx, actionDao, this.logging);
 			
-			nodeManager = new PostgreSqlEntityManager<Node>(nodeDao, userDao);
-			wayManager = new PostgreSqlEntityManager<Way>(wayDao, userDao);
-			relationManager = new PostgreSqlEntityManager<Relation>(relationDao, userDao);
+			nodeManager = new PostgreSqlEntityManager<>(nodeDao, userDao);
+			wayManager = new PostgreSqlEntityManager<>(wayDao, userDao);
+			relationManager = new PostgreSqlEntityManager<>(relationDao, userDao);
 		}
 		
 		initialized = true;

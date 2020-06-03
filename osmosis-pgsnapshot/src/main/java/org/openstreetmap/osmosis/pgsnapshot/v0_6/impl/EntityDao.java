@@ -116,7 +116,7 @@ public abstract class EntityDao<T extends Entity> {
 		
 		args = new HashMap<String, Object>();
 		entityMapper.populateEntityParameters(args, entity);
-
+    
 		final String query = entityMapper.getSqlInsert(1);
 		namedParameterJdbcTemplate.update(query, args);
 		this.updateLoggingTable(query, args, 0);
@@ -136,7 +136,7 @@ public abstract class EntityDao<T extends Entity> {
 		
 		args = new HashMap<String, Object>();
 		entityMapper.populateEntityParameters(args, entity);
-
+    
 		final String query = entityMapper.getSqlUpdate(true);
 		namedParameterJdbcTemplate.update(query, args);
 		this.updateLoggingTable(query, args, 1);
@@ -156,7 +156,7 @@ public abstract class EntityDao<T extends Entity> {
 		
 		args = new HashMap<String, Object>();
 		args.put("id", entityId);
-
+    
 		final String query = entityMapper.getSqlDelete(true);
 		namedParameterJdbcTemplate.update(query, args);
 		this.updateLoggingTable(query, args, 2);

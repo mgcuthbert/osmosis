@@ -34,6 +34,7 @@ import org.openstreetmap.osmosis.pgsnapshot.v0_6.impl.ChangeWriter;
 public class PostgreSqlChangeWriter implements ChangeSink {
 
 	private static final SimpleDateFormat FORMATTER = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	
 
 	private ChangeWriter changeWriter;
 	private Map<ChangeAction, ActionChangeWriter> actionWriterMap;
@@ -45,7 +46,7 @@ public class PostgreSqlChangeWriter implements ChangeSink {
 	private long latestTimestamp = 0L;
 	private final Map<String, Integer> modifications;
 	private final DatabaseLocker locker;
-
+  
 	/**
 	 * Creates a new instance.
 	 *
@@ -119,10 +120,12 @@ public class PostgreSqlChangeWriter implements ChangeSink {
 		this.earliestTimestamp = Math.min(this.earliestTimestamp, entity.getTimestamp().getTime());
 		this.latestTimestamp = Math.max(this.latestTimestamp, entity.getTimestamp().getTime());
 
-		final String name = entity.getType().name() + "-" + action.name();
+ 		final String name = entity.getType().name() + "-" + action.name();
 		final int count = modifications.getOrDefault(name, 0) + 1;
 		modifications.put(name, count);
-
+		
+		// Process the entity using the action writer appropriate for the change
+		// action.
 		change.getEntityContainer().process(actionWriterMap.get(action));
 	}
 
@@ -151,7 +154,7 @@ public class PostgreSqlChangeWriter implements ChangeSink {
 				modifications.getOrDefault(EntityType.Relation.name() + "-" + ChangeAction.Create, 0),
 				modifications.getOrDefault(EntityType.Relation.name() + "-" + ChangeAction.Modify, 0),
 				modifications.getOrDefault(EntityType.Relation.name() + "-" + ChangeAction.Delete, 0),
-                appliedChangeSets.stream().map(id -> id + "").collect(Collectors.joining(",")),
+		appliedChangeSets.stream().map(id -> id + "").collect(Collectors.joining(",")),
 				FORMATTER.format(new Date(earliestTimestamp)), FORMATTER.format(new Date(latestTimestamp))));
 
 		dbCtx.commitTransaction();
