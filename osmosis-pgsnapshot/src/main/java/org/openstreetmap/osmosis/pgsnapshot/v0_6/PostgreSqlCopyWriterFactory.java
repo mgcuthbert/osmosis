@@ -27,6 +27,7 @@ public class PostgreSqlCopyWriterFactory extends DatabaseTaskManagerFactory {
 		NodeLocationStoreType storeType;
 		boolean keepInvalidWays;
 
+    // Get the task arguments.
 		storeType = Enum.valueOf(
 				NodeLocationStoreType.class,
 				getStringArgument(taskConfig, ARG_NODE_LOCATION_STORE_TYPE, DEFAULT_NODE_LOCATION_STORE_TYPE));
@@ -35,10 +36,10 @@ public class PostgreSqlCopyWriterFactory extends DatabaseTaskManagerFactory {
 		return new SinkManager(
 			taskConfig.getId(),
 			new PostgreSqlCopyWriter(
-				getDatabaseLoginCredentials(taskConfig), 
-				getDatabasePreferences(taskConfig),	
-				storeType, 
-				keepInvalidWays),
+					this.getDatabaseLoginCredentials(taskConfig),
+					this.getDatabasePreferences(taskConfig),
+					storeType,
+					keepInvalidWays),
 			taskConfig.getPipeArgs()
 		);
 	}

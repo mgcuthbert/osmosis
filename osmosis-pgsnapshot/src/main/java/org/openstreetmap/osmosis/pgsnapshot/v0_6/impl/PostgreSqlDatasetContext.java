@@ -76,8 +76,8 @@ public class PostgreSqlDatasetContext implements DatasetContext {
 	 * @param logging
 	 * 			  Verbose logging directly to the database
 	 */
-	public PostgreSqlDatasetContext(DatabaseLoginCredentials loginCredentials, 
-					DatabasePreferences preferences, boolean logging) {
+	public PostgreSqlDatasetContext(DatabaseLoginCredentials loginCredentials,
+			DatabasePreferences preferences, boolean logging) {
 		this.loginCredentials = loginCredentials;
 		this.preferences = preferences;
 		

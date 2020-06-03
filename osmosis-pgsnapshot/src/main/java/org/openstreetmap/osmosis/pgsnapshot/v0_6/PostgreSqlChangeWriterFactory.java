@@ -6,14 +6,12 @@ import org.openstreetmap.osmosis.core.pipeline.common.TaskConfiguration;
 import org.openstreetmap.osmosis.core.pipeline.common.TaskManager;
 import org.openstreetmap.osmosis.core.pipeline.v0_6.ChangeSinkManager;
 
-
 /**
  * The task manager factory for a database change writer.
  * 
  * @author Brett Henderson
  */
 public class PostgreSqlChangeWriterFactory extends DatabaseTaskManagerFactory {
-	
 	private static final String ARG_KEEP_INVALID_WAYS = "keepInvalidWays";
 	private static final boolean DEFAULT_KEEP_INVALID_WAYS = true;
 	private static final String ARG_LOGGING = "logging";

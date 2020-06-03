@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 
 import org.openstreetmap.osmosis.core.OsmosisRuntimeException;
 import org.openstreetmap.osmosis.core.container.v0_6.ChangeContainer;
+import org.openstreetmap.osmosis.core.database.DatabaseLocker;
 import org.openstreetmap.osmosis.core.database.DatabaseLoginCredentials;
 import org.openstreetmap.osmosis.core.database.DatabasePreferences;
 import org.openstreetmap.osmosis.core.domain.v0_6.Entity;
@@ -27,88 +28,89 @@ import org.openstreetmap.osmosis.pgsnapshot.v0_6.impl.ChangeWriter;
  * A change sink writing to database tables. This aims to be suitable for
  * running at regular intervals with database overhead proportional to changeset
  * size.
- * 
+ *
  * @author Brett Henderson
  */
 public class PostgreSqlChangeWriter implements ChangeSink {
 
 	private static final SimpleDateFormat FORMATTER = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	
+
 	private ChangeWriter changeWriter;
 	private Map<ChangeAction, ActionChangeWriter> actionWriterMap;
 	private DatabaseContext dbCtx;
 	private SchemaVersionValidator schemaVersionValidator;
 	private boolean initialized;
 	private final Set<Long> appliedChangeSets;
- 	private long earliestTimestamp = 9999999999999L;
+	private long earliestTimestamp = 9999999999999L;
 	private long latestTimestamp = 0L;
 	private final Map<String, Integer> modifications;
-	
-	
+	private final DatabaseLocker locker;
+  
 	/**
 	 * Creates a new instance.
-	 * 
+	 *
 	 * @param loginCredentials
 	 *            Contains all information required to connect to the database.
 	 * @param preferences
 	 *            Contains preferences configuring database behaviour.
 	 * @param keepInvalidWays
 	 *            If true, zero and single node ways are kept. Otherwise they are
-	 *            silently dropped to avoid putting invalid geometries into the 
+	 *            silently dropped to avoid putting invalid geometries into the
 	 *            database which can cause problems with postgis functions.
 	 * @param logging
 	 * 			  If true, will log all sql queries to the database that was executed
 	 * 			  from the change log
 	 */
-	public PostgreSqlChangeWriter(DatabaseLoginCredentials loginCredentials, 
+	public PostgreSqlChangeWriter(DatabaseLoginCredentials loginCredentials,
 			DatabasePreferences preferences, boolean keepInvalidWays, boolean logging) {
 		dbCtx = new DatabaseContext(loginCredentials);
 		changeWriter = new ChangeWriter(dbCtx, logging);
-		actionWriterMap = new HashMap<ChangeAction, ActionChangeWriter>();
-		actionWriterMap.put(ChangeAction.Create, 
+		actionWriterMap = new HashMap<>();
+		actionWriterMap.put(ChangeAction.Create,
 				new ActionChangeWriter(changeWriter, ChangeAction.Create, keepInvalidWays));
-		actionWriterMap.put(ChangeAction.Modify, 
+		actionWriterMap.put(ChangeAction.Modify,
 				new ActionChangeWriter(changeWriter, ChangeAction.Modify, keepInvalidWays));
-		actionWriterMap.put(ChangeAction.Delete, 
+		actionWriterMap.put(ChangeAction.Delete,
 				new ActionChangeWriter(changeWriter, ChangeAction.Delete, keepInvalidWays));
-		
+
 		schemaVersionValidator = new SchemaVersionValidator(dbCtx.getJdbcTemplate(), preferences);
 		appliedChangeSets = new HashSet<>();
 		modifications = new HashMap<>();
 		initialized = false;
+		locker = new DatabaseLocker(dbCtx.getDataSource(), true);
 	}
-	
-	
+
 	private void initialize() {
 		if (!initialized) {
+			this.locker.lockDatabase(this.getClass().getSimpleName());
 			dbCtx.beginTransaction();
-			
+
 			initialized = true;
 		}
 	}
-    
-    
+
     /**
      * {@inheritDoc}
      */
     public void initialize(Map<String, Object> metaData) {
 		// Do nothing.
 	}
-	
-	
+
+
 	/**
 	 * {@inheritDoc}
 	 */
 	public void process(ChangeContainer change) {
 		ChangeAction action;
-		
+
 		initialize();
-		
+
 		// Verify that the schema version is supported.
 		schemaVersionValidator.validateVersion(PostgreSqlVersionConstants.SCHEMA_VERSION);
-		
+
 		action = change.getAction();
-		
+
 		if (!actionWriterMap.containsKey(action)) {
 			throw new OsmosisRuntimeException("The action " + action + " is unrecognized.");
 		}
@@ -126,14 +128,13 @@ public class PostgreSqlChangeWriter implements ChangeSink {
 		// action.
 		change.getEntityContainer().process(actionWriterMap.get(action));
 	}
-	
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
 	public void complete() {
 		initialize();
-		
+
 		changeWriter.complete();
 
 		// on complete write to the changes table
@@ -155,17 +156,18 @@ public class PostgreSqlChangeWriter implements ChangeSink {
 				modifications.getOrDefault(EntityType.Relation.name() + "-" + ChangeAction.Delete, 0),
 		appliedChangeSets.stream().map(id -> id + "").collect(Collectors.joining(",")),
 				FORMATTER.format(new Date(earliestTimestamp)), FORMATTER.format(new Date(latestTimestamp))));
-		
+
 		dbCtx.commitTransaction();
 	}
-	
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
 	public void close() {
+		// now that we are finished, unlock the database
+		this.locker.unlockDatabase();
+
 		changeWriter.release();
-		
 		dbCtx.close();
 	}
 }

@@ -6,7 +6,6 @@ import org.openstreetmap.osmosis.core.pipeline.common.TaskConfiguration;
 import org.openstreetmap.osmosis.core.pipeline.common.TaskManager;
 import org.openstreetmap.osmosis.core.pipeline.v0_6.RunnableDatasetSourceManager;
 
-
 /**
  * The task manager factory for a database reader.
  * 
@@ -22,9 +21,9 @@ public class PostgreSqlDatasetReaderFactory extends DatabaseTaskManagerFactory {
 		return new RunnableDatasetSourceManager(
 			taskConfig.getId(),
 			new PostgreSqlDatasetReader(
-				getDatabaseLoginCredentials(taskConfig), 
-				getDatabasePreferences(taskConfig)),
-			taskConfig.getPipeArgs()
-		);
+					getDatabaseLoginCredentials(taskConfig),
+					getDatabasePreferences(taskConfig)),
+					taskConfig.getPipeArgs()
+			);
 	}
 }
